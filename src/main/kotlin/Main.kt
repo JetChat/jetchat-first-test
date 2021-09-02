@@ -15,14 +15,10 @@ import androidx.compose.ui.window.application
 @Preview
 fun App() {
 	var text by remember { mutableStateOf("Hello, World!") }
+	val user = User("Ayfri#0000")
+	val message = Message(text, user)
 	
-	DesktopMaterialTheme {
-		Button(onClick = {
-			text = "Hello, Desktop!"
-		}) {
-			Text(text)
-		}
-	}
+	Message(message)
 }
 
 fun main() = application {
