@@ -1,10 +1,7 @@
 import kotlinx.datetime.Clock
 
-class User(val tag: String) {
-	var username: String
+class User(var tag: String) {
+	val username get() = tag.dropLast(5)
+	val avatarUrl: String? = null
 	val id: Snowflake = Clock.System.now().toEpochMilliseconds()
-	
-	init {
-		username = tag.dropLast(5)
-	}
 }
