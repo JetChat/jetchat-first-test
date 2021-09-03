@@ -13,7 +13,7 @@ fun App() {
 	var text by remember { mutableStateOf("Hello, World!") }
 	val channel by remember { mutableStateOf(GuildTextChannel("test")) }
 	val user by remember { mutableStateOf(User("Ayfri#0000")) }
-	var message by remember { mutableStateOf(Message("$text 0", user)) }
+	var message: Message
 	
 	for (i in 0..20) {
 		message = Message("$text $i", user)
