@@ -23,7 +23,7 @@ data class Message(val content: String, val author: User) {
 
 @Composable
 fun Message(message: Message) {
-	Box() {
+	Box {
 		Row {
 			val imageModifier = Modifier.height(32.dp).width(32.dp).align(Alignment.CenterVertically)
 			if (message.author.avatarUrl != null) Image(message.author.avatar!!, "${message.author.tag}'s avatar", imageModifier)

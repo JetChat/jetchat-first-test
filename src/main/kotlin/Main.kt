@@ -11,10 +11,16 @@ import androidx.compose.ui.window.application
 @Preview
 fun App() {
 	var text by remember { mutableStateOf("Hello, World!") }
-	val user = User("Ayfri#0000")
-	val message = Message(text, user)
+	val channel by remember { mutableStateOf(GuildTextChannel("test")) }
+	val user by remember { mutableStateOf(User("Ayfri#0000")) }
+	var message by remember { mutableStateOf(Message("$text 0", user)) }
 	
-	Message(message)
+	for (i in 0..20) {
+		message = Message("$text $i", user)
+		channel.messages[message.id] = message
+	}
+	
+	MessageList(channel)
 }
 
 fun main() = application {
