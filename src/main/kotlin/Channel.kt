@@ -30,7 +30,7 @@ abstract class Channel(val type: ChannelType) {
 interface ITextChannel {
 	val id: Snowflake
 	val type: ChannelType
-	val messages: SnapshotStateMap<Snowflake, Message>
+	val messages: MutableMap<Snowflake, Message>
 	val isInGuild: Boolean
 	val isTextChannel get() = true
 }
