@@ -11,13 +11,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import kotlinx.datetime.Clock
+import kotlin.random.Random
 
 data class Message(val content: String, val author: User) {
 	val id: Snowflake
 	
 	init {
 		val now = Clock.System.now()
-		id = "${now.toEpochMilliseconds()}${now.nanosecondsOfSecond.toString().takeLast(3)}".toLong()
+		id = "${now.toEpochMilliseconds()}${Random.nextInt(100_000, 999_999)}".toLong()
 	}
 }
 
