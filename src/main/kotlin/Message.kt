@@ -14,12 +14,8 @@ import kotlinx.datetime.Clock
 import kotlin.random.Random
 
 data class Message(val content: String, val author: User) {
-	val id: Snowflake
-	
-	init {
-		val now = Clock.System.now()
-		id = "${now.toEpochMilliseconds()}${Random.nextInt(100_000, 999_999)}".toLong()
-	}
+	val createdAt = Clock.System.now()
+	val id: Snowflake = "${createdAt.toEpochMilliseconds()}${Random.nextInt(100_000, 999_999)}".toLong()
 }
 
 @Composable
