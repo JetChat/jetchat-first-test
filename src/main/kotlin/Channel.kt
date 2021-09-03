@@ -61,7 +61,7 @@ enum class ChannelType {
 fun MessageList(channel: Channel) {
 	if (!channel.isTextChannel) return
 	val chan = channel.asTextChannelOrNull ?: return
-	val messages = chan.messages.values.toList()
+	val messages = chan.messages.values.toList().sortedBy { it.id }
 	
 	Box {
 		val listState = rememberLazyListState()
