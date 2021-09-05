@@ -1,17 +1,25 @@
 
 import androidx.compose.foundation.VerticalScrollbar
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollbarAdapter
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import kotlinx.datetime.Clock
 
@@ -29,6 +37,7 @@ abstract class Channel(val type: ChannelType) {
 }
 
 interface ITextChannel {
+	val name: String
 	val id: Snowflake
 	val type: ChannelType
 	val messages: MutableMap<Snowflake, Message>
@@ -37,6 +46,7 @@ interface ITextChannel {
 }
 
 class DMChannel(val members: Pair<User, User>) : Channel(ChannelType.DMChannel), ITextChannel {
+	override val name = members.first.tag
 	override val id: Snowflake = createdAt.toEpochMilliseconds()
 	override val isInGuild = false
 	override val isTextChannel = true
@@ -82,5 +92,27 @@ fun MessageList(channel: Channel) {
 			modifier = Modifier.align(Alignment.CenterEnd).fillMaxHeight(),
 			adapter = rememberScrollbarAdapter(scrollState = listState)
 		)
+	}
+}
+
+@Composable
+fun TextChannel(channel: ITextChannel) {
+	Column {
+		Row(
+			modifier = Modifier.background(Color.LightGray).fillMaxWidth().height(30.dp).padding(horizontal = 10.dp),
+			horizontalArrangement = Arrangement.SpaceBetween,
+			verticalAlignment = Alignment.CenterVertically,
+		) {
+			Text("# ${channel.name}", modifier = Modifier.requiredHeight(20.dp))
+			TextChannelButtons(channel)
+		}
+		MessageList(channel as Channel)
+	}
+}
+
+@Composable
+fun TextChannelButtons(channel: ITextChannel) {
+	Box {
+	
 	}
 }
