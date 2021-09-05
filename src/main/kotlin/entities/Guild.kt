@@ -1,3 +1,6 @@
+package entities
+
+import Snowflake
 import kotlinx.datetime.Clock
 
 class Guild(val name: String) {
