@@ -1,7 +1,6 @@
 package composables
 
 import androidx.compose.foundation.BoxWithTooltip
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.TooltipPlacement
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -32,7 +31,6 @@ import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import copyToClipboard
 import entities.Message
-import entities.User
 
 
 @Composable
@@ -65,9 +63,7 @@ fun ChannelMessage(message: Message) {
 @Composable
 fun Message(message: Message) {
 	Row {
-		val imageModifier = Modifier.height(32.dp).width(32.dp).align(Alignment.CenterVertically)
-		if (message.author.avatarUrl != null) Image(message.author.avatar!!, "${message.author.tag}'s avatar", imageModifier)
-		else Image(User.defaultAvatar, "${message.author.tag}'s avatar", imageModifier)
+		message.author.asImage(Modifier.height(32.dp).width(32.dp).align(Alignment.CenterVertically))
 		Column {
 			Text(message.author.username)
 			Text(message.content)
