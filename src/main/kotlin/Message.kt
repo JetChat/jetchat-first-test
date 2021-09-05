@@ -1,3 +1,4 @@
+
 import androidx.compose.foundation.BoxWithTooltip
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.TooltipPlacement
@@ -12,7 +13,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -64,7 +65,7 @@ fun ChannelMessage(message: Message) {
 		).fillMaxWidth().background(if (showButtons) Color(245, 245, 245) else Color.White)
 	) {
 		Row(
-			modifier = Modifier.fillMaxWidth(),
+			modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp),
 			horizontalArrangement = Arrangement.SpaceBetween
 		) {
 			Message(message)
@@ -97,7 +98,7 @@ fun MessageButtons(message: Message) {
 		tooltip = {
 			Box(
 				modifier = Modifier
-					.background(MaterialTheme.colors.primaryVariant, shape = CircleShape)
+					.background(MaterialTheme.colors.primaryVariant, shape = RoundedCornerShape(30))
 					.padding(5.dp)
 			) {
 				Text(message.id.toString(), color = Color.White)
@@ -117,7 +118,10 @@ fun MessageButtons(message: Message) {
 				"ID",
 				color = Color.White,
 				fontSize = TextUnit(0.8f, TextUnitType.Em),
-				modifier = Modifier.align(Alignment.Center).background(MaterialTheme.colors.primary, CircleShape).padding(start = 8.dp, end = 8.dp, top = 5.dp, bottom = 5.dp)
+				modifier = Modifier
+					.align(Alignment.Center)
+					.background(MaterialTheme.colors.primary, RoundedCornerShape(30))
+					.padding(start = 8.dp, end = 8.dp, top = 5.dp, bottom = 5.dp)
 			)
 		}
 	}
