@@ -3,6 +3,7 @@ import androidx.compose.foundation.VerticalScrollbar
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -63,15 +64,17 @@ fun MessageList(channel: Channel) {
 	val chan = channel.asTextChannelOrNull ?: return
 	val messages = chan.messages.values.toList().sortedBy { it.id }
 	
-	Box {
+	Box(
+		modifier = Modifier.fillMaxWidth()
+	) {
 		val listState = rememberLazyListState()
 		
 		LazyColumn(
-			verticalArrangement = Arrangement.spacedBy(4.dp),
+			verticalArrangement = Arrangement.spacedBy(8.dp),
 			state = listState,
 		) {
 			items(messages, { it.id }) {
-				Message(it)
+				ChannelMessage(it)
 			}
 		}
 		
