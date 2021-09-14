@@ -22,10 +22,9 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Send
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -35,6 +34,7 @@ import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import entities.DMChannel
 import entities.ITextChannel
+import entities.Message
 import entities.User
 
 @OptIn(ExperimentalUnitApi::class)
@@ -56,24 +56,26 @@ fun TextChannel(channel: ITextChannel) {
 			MessageList(channel)
 			ChannelMembers(channel)
 		}
-		SendBox()
+		
+		val text = remember { mutableStateOf("") }
+		SendBox(text) {
+			val message = Message(content = it, author = User("Ayfri#0000"))
+			channel.messages[message.id] = message
+			text.value = ""
+		}
 	}
 }
 
 @Composable
-fun SendBox(modifier: Modifier = Modifier) {
+fun SendBox(text: MutableState<String>, modifier: Modifier = Modifier, onSend: (String) -> Unit = {}) {
 	Row(
 		modifier = Modifier.background(Color(240, 240, 240)).fillMaxWidth().padding(10.dp).then(modifier)
 	) {
-		var text by remember { mutableStateOf("") }
 		OutlinedTextField(
-			text,
+			text.value,
 			modifier = Modifier.fillMaxWidth(0.8f).requiredHeightIn(50.dp, 400.dp),
 			onValueChange = {
-				text = it
-			},
-			label = {
-				Text("")
+				text.value = it
 			},
 			placeholder = {
 				Text("Enter Text")
@@ -82,6 +84,7 @@ fun SendBox(modifier: Modifier = Modifier) {
 		IconButton(
 			modifier = Modifier.align(Alignment.CenterVertically),
 			onClick = {
+				onSend(text.value)
 			}
 		) {
 			Icon(Icons.Default.Send, "send")
