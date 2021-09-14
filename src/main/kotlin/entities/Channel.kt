@@ -42,6 +42,7 @@ class GuildTextChannel(name: String) : GuildChannel(name, ChannelType.GuildTextC
 
 abstract class GuildChannel(val name: String, type: ChannelType) : Channel(type) {
 	override val id: Snowflake = Clock.System.now().toEpochMilliseconds()
+	val position: Int = 0
 }
 
 enum class ChannelType {
