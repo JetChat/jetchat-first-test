@@ -25,6 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerMoveFilter
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
@@ -65,7 +66,7 @@ fun Message(message: Message) {
 	Row {
 		message.author.asImage(Modifier.height(32.dp).width(32.dp).align(Alignment.CenterVertically))
 		Column {
-			Text(message.author.username)
+			Text(message.author.username, fontWeight = FontWeight.SemiBold)
 			Text(message.content)
 		}
 	}
