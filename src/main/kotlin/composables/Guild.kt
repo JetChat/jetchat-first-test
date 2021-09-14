@@ -2,16 +2,18 @@ package composables
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Tag
+import androidx.compose.material.icons.outlined.Tag
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import entities.ChannelType.GuildTextChannel
 import entities.Guild
 import entities.GuildChannel
@@ -38,7 +40,7 @@ fun Guild(guild: Guild) {
 	
 	Row {
 		ChannelList(guild)
-		if(selectedChannel.isTextChannel) {
+		if (selectedChannel.isTextChannel) {
 			TextChannel(selectedChannel.asTextChannel)
 		}
 	}
@@ -46,13 +48,25 @@ fun Guild(guild: Guild) {
 
 @Composable
 fun GuildChannel(guildChannel: GuildChannel) {
-	Row {
-		Text(guildChannel.name)
+	Row(
+		modifier = Modifier.padding(horizontal = 5.dp)
+	) {
 		Icon(
 			when (guildChannel.type) {
-				GuildTextChannel -> Icons.Default.Tag
-				else -> Icons.Default.Tag
+				GuildTextChannel -> Icons.Outlined.Tag
+				else -> Icons.Outlined.Tag
 			}, "channelIcon"
 		)
+		Text(guildChannel.name)
+	}
+}
+
+@Composable
+fun GuildMemberList(guild: Guild) {
+	val members = guild.members.values.sortedBy { it.tag }
+	LazyColumn {
+		items(members) {
+			User(it.user)
+		}
 	}
 }

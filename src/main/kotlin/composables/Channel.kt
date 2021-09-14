@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import entities.DMChannel
+import entities.GuildTextChannel
 import entities.ITextChannel
 import entities.Message
 import entities.User
@@ -123,7 +124,7 @@ fun ChannelMembers(channel: ITextChannel) {
 		modifier = Modifier.fillMaxWidth()
 	) {
 		if (channel.isInGuild) {
-		
+			GuildMemberList((channel as GuildTextChannel).guild)
 		} else {
 			ChannelUserList((channel as DMChannel).members.toList())
 		}
