@@ -34,13 +34,13 @@ class DMChannel(val members: Pair<User, User>) : Channel(ChannelType.DMChannel),
 	override val messages = mutableStateMapOf<Snowflake, Message>()
 }
 
-class GuildTextChannel(name: String) : GuildChannel(name, ChannelType.GuildTextChannel), ITextChannel {
+class GuildTextChannel(name: String, guild: Guild) : GuildChannel(name, ChannelType.GuildTextChannel, guild), ITextChannel {
 	override val isInGuild = true
 	override val isTextChannel = true
 	override val messages = mutableStateMapOf<Snowflake, Message>()
 }
 
-abstract class GuildChannel(val name: String, type: ChannelType) : Channel(type) {
+abstract class GuildChannel(val name: String, type: ChannelType, val guild: Guild) : Channel(type) {
 	override val id: Snowflake = Clock.System.now().toEpochMilliseconds()
 	val position: Int = 0
 }
