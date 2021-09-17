@@ -60,8 +60,7 @@ fun TextChannel(channel: ITextChannel) {
 		
 		val text = remember { mutableStateOf("") }
 		SendBox(text) {
-			val message = Message(content = it, author = User("Ayfri#0000"))
-			channel.messages[message.id] = message
+			channel.createMessage(Message(it, User("Ayfri#0000")))
 			text.value = ""
 		}
 	}

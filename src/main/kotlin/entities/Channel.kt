@@ -24,6 +24,10 @@ interface ITextChannel {
 	val messages: MutableMap<Snowflake, Message>
 	val isInGuild: Boolean
 	val isTextChannel get() = true
+	
+	fun createMessage(message: Message) = messages.put(message.id, message)
+	
+	fun deleteMessage(messageId: Snowflake) = messages.remove(messageId)
 }
 
 class DMChannel(val members: Pair<User, User>) : Channel(ChannelType.DMChannel), ITextChannel {
@@ -43,10 +47,13 @@ class GuildTextChannel(name: String, guild: Guild) : GuildChannel(name, ChannelT
 abstract class GuildChannel(val name: String, type: ChannelType, val guild: Guild) : Channel(type) {
 	override val id: Snowflake = Clock.System.now().toEpochMilliseconds()
 	val position: Int = 0
+	val members get() = guild.members
 }
 
 enum class ChannelType {
 	DMChannel,
-	GuildTextChannel
+	GuildTextChannel;
+	
+	val isTextType get() = this == GuildTextChannel
 }
 
