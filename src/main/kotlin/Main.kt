@@ -19,7 +19,9 @@ import entities.User
 fun App() {
 	val text = "Hello, World!"
 	val guild by remember { mutableStateOf(Guild("test")) }
-	guild.createChannel("test", ChannelType.GuildTextChannel)
+	for (i in 0..15) {
+		guild.createChannel("test $i", ChannelType.GuildTextChannel)
+	}
 	
 	for (i in 0..9) {
 		val user = User("Ayfri#000$i")
@@ -33,9 +35,6 @@ fun App() {
 	}
 	
 	Guild(guild)
-	
-	
-//	TextChannel(channel)
 }
 
 fun main() = application {
