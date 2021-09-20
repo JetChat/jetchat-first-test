@@ -17,14 +17,11 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.pointer.pointerMoveFilter
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.compose.ui.unit.TextUnit
@@ -36,17 +33,10 @@ import entities.Message
 
 @Composable
 fun ChannelMessage(message: Message) {
-	var showButtons by remember { mutableStateOf(false) }
-	Box(
-		modifier = Modifier.pointerMoveFilter(
-			onEnter = {
-				showButtons = true
-				true
-			}, onExit = {
-				showButtons = false
-				true
-			}
-		).fillMaxWidth().background(if (showButtons) Color(245, 245, 245) else Color.White)
+	val showButtons = remember { mutableStateOf(false) }
+	
+	Hoverable(
+		hovered = showButtons,
 	) {
 		Row(
 			modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp),
@@ -54,7 +44,7 @@ fun ChannelMessage(message: Message) {
 		) {
 			Message(message)
 			
-			if (showButtons) {
+			if (showButtons.value) {
 				MessageButtons(message)
 			}
 		}
