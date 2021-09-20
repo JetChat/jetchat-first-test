@@ -4,6 +4,8 @@ import Snowflake
 import androidx.compose.runtime.mutableStateMapOf
 import kotlinx.datetime.Clock
 
+var lastChannelCreatedInstant = Clock.System.now()
+
 abstract class Channel(val type: ChannelType) {
 	abstract val id: Snowflake
 	abstract val isTextChannel: Boolean
@@ -45,9 +47,20 @@ class GuildTextChannel(name: String, guild: Guild) : GuildChannel(name, ChannelT
 }
 
 abstract class GuildChannel(val name: String, type: ChannelType, val guild: Guild) : Channel(type) {
-	override val id: Snowflake = Clock.System.now().toEpochMilliseconds()
+	final override val id: Snowflake
 	val position: Int = 0
 	val members get() = guild.members
+	
+	init {
+		if (lastChannelCreatedInstant == createdAt) {
+			globalId++
+		} else {
+			lastChannelCreatedInstant = createdAt
+			globalId = 0
+		}
+		
+		id = "${createdAt.toEpochMilliseconds()}${globalId.toString().padStart(5, '0')}".toLong()
+	}
 }
 
 enum class ChannelType {
