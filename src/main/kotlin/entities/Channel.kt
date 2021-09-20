@@ -30,8 +30,8 @@ interface ITextChannel {
 	fun deleteMessage(messageId: Snowflake) = messages.remove(messageId)
 }
 
-class DMChannel(val members: Pair<User, User>) : Channel(ChannelType.DMChannel), ITextChannel {
-	override val name = members.first.tag
+class DMChannel(val members: List<User> = emptyList()) : Channel(ChannelType.DMChannel), ITextChannel {
+	override val name = members.joinToString(" ") { it.tag }
 	override val id: Snowflake = createdAt.toEpochMilliseconds()
 	override val isInGuild = false
 	override val isTextChannel = true
