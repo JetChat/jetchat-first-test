@@ -9,9 +9,8 @@ import androidx.compose.ui.window.WindowPlacement
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
 import composables.Guild
+import entities.ChannelType
 import entities.Guild
-import entities.GuildMember
-import entities.GuildTextChannel
 import entities.Message
 import entities.User
 
@@ -20,18 +19,17 @@ import entities.User
 fun App() {
 	val text = "Hello, World!"
 	val guild by remember { mutableStateOf(Guild("test")) }
-	val channel = GuildTextChannel("test", guild)
-	guild.channels[channel.id] = channel
+	guild.createChannel("test", ChannelType.GuildTextChannel)
 	
-	val user = User("Ayfri#0000")
-	val user2 = User("Ayfri#0001")
-	guild.members[user.id] = GuildMember(guild, user)
-	guild.members[user2.id] = GuildMember(guild, user2)
+	for (i in 0..9) {
+		val user = User("Ayfri#000$i")
+		guild.addMember(user)
+	}
 	
 	var message: Message
 	for (i in 0..5) {
-		message = Message("$text $i", user)
-		channel.messages[message.id] = message
+		message = Message("$text $i", guild.getMember("Ayfri#0000")!!.user)
+		guild.textChannels.first().createMessage(message)
 	}
 	
 	Guild(guild)
