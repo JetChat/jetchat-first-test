@@ -3,6 +3,7 @@ package composables
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredWidthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Icon
@@ -12,6 +13,7 @@ import androidx.compose.material.icons.outlined.Tag
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import entities.ChannelType.GuildTextChannel
@@ -23,7 +25,7 @@ fun ChannelList(guild: Guild, modifier: Modifier = Modifier) {
 	val channels = guild.channels.values.toList().sortedBy { it.position }
 	
 	Box(
-		modifier = Modifier.then(modifier)
+		modifier = Modifier.requiredWidthIn(100.dp, 200.dp).then(modifier)
 	) {
 		LazyColumn {
 			items(channels) {
@@ -47,9 +49,9 @@ fun Guild(guild: Guild) {
 }
 
 @Composable
-fun GuildChannel(guildChannel: GuildChannel) {
+fun GuildChannel(guildChannel: GuildChannel, modifier: Modifier = Modifier) {
 	Row(
-		modifier = Modifier.padding(horizontal = 5.dp)
+		modifier = Modifier.padding(horizontal = 5.dp).then(modifier)
 	) {
 		Icon(
 			when (guildChannel.type) {
@@ -57,7 +59,7 @@ fun GuildChannel(guildChannel: GuildChannel) {
 				else -> Icons.Outlined.Tag
 			}, "channelIcon"
 		)
-		Text(guildChannel.name)
+		Text(guildChannel.name, Modifier.align(Alignment.CenterVertically))
 	}
 }
 
