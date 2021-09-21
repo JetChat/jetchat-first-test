@@ -40,8 +40,10 @@ import entities.User
 
 @OptIn(ExperimentalUnitApi::class)
 @Composable
-fun TextChannel(channel: ITextChannel) {
-	Column {
+fun TextChannel(channel: ITextChannel, modifier: Modifier = Modifier) {
+	Column(
+		modifier
+	) {
 		Row(
 			modifier = Modifier.background(Color.LightGray).fillMaxWidth().height(40.dp).padding(horizontal = 10.dp),
 			horizontalArrangement = Arrangement.SpaceBetween,

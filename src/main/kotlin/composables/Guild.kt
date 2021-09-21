@@ -1,9 +1,11 @@
 package composables
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.requiredWidthIn
+import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Icon
@@ -15,6 +17,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.ExperimentalUnitApi
+import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import entities.ChannelType.GuildTextChannel
 import entities.Guild
@@ -25,7 +30,7 @@ fun ChannelList(guild: Guild, modifier: Modifier = Modifier) {
 	val channels = guild.channels.values.toList().sortedBy { it.position }
 	
 	Box(
-		modifier = Modifier.requiredWidthIn(100.dp, 200.dp).then(modifier)
+		modifier = Modifier.fillMaxWidth(0.1f).then(modifier)
 	) {
 		LazyColumn {
 			items(channels) {
@@ -41,10 +46,23 @@ fun Guild(guild: Guild) {
 	val selectedChannel = guild.channels.values.find { it.position == selectedChannelPosition.value } ?: guild.channels.values.minByOrNull { it.position }!!
 	
 	Row {
-		ChannelList(guild)
-		if (selectedChannel.isTextChannel) {
-			TextChannel(selectedChannel.asTextChannel)
+		Column {
+			GuildName(guild)
+			ChannelList(guild)
 		}
+		if (selectedChannel.isTextChannel) {
+			TextChannel(selectedChannel.asTextChannel, Modifier.weight(1f).fillMaxWidth(0.9f))
+		}
+	}
+}
+
+@OptIn(ExperimentalUnitApi::class)
+@Composable
+fun GuildName(guild: Guild) {
+	Box(
+		modifier = Modifier.requiredHeight(50.dp).fillMaxWidth(0.1f)
+	) {
+		Text(guild.name, fontSize = TextUnit(1.8f, TextUnitType.Em),modifier = Modifier.align(Alignment.Center))
 	}
 }
 
