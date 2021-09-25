@@ -1,5 +1,6 @@
 package composables
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -26,7 +27,7 @@ import entities.Guild
 import entities.GuildChannel
 
 @Composable
-fun ChannelList(guild: Guild, modifier: Modifier = Modifier) {
+fun ChannelList(guild: Guild, onSelect: (GuildChannel) -> Unit = {}, modifier: Modifier = Modifier) {
 	val channels = guild.channels.values.toList().sortedBy { it.position }
 	
 	Box(
@@ -34,7 +35,9 @@ fun ChannelList(guild: Guild, modifier: Modifier = Modifier) {
 	) {
 		LazyColumn {
 			items(channels) {
-				GuildChannel(it)
+				GuildChannel(it, modifier = Modifier.clickable {
+					onSelect(it)
+				})
 			}
 		}
 	}
@@ -42,16 +45,19 @@ fun ChannelList(guild: Guild, modifier: Modifier = Modifier) {
 
 @Composable
 fun Guild(guild: Guild) {
-	val selectedChannelPosition = remember { mutableStateOf(0) }
-	val selectedChannel = guild.channels.values.find { it.position == selectedChannelPosition.value } ?: guild.channels.values.minByOrNull { it.position }!!
+	val selectedChannel = remember {
+		mutableStateOf(guild.channels.values.minByOrNull { it.position }!!)
+	}
 	
 	Row {
 		Column {
 			GuildName(guild)
-			ChannelList(guild)
+			ChannelList(guild, {
+				selectedChannel.value = it
+			})
 		}
-		if (selectedChannel.isTextChannel) {
-			TextChannel(selectedChannel.asTextChannel, Modifier.weight(1f).fillMaxWidth(0.9f))
+		if (selectedChannel.value.isTextChannel) {
+			TextChannel(selectedChannel.value.asTextChannel, Modifier.weight(1f).fillMaxWidth(0.9f))
 		}
 	}
 }
@@ -62,7 +68,7 @@ fun GuildName(guild: Guild) {
 	Box(
 		modifier = Modifier.requiredHeight(50.dp).fillMaxWidth(0.1f)
 	) {
-		Text(guild.name, fontSize = TextUnit(1.8f, TextUnitType.Em),modifier = Modifier.align(Alignment.Center))
+		Text(guild.name, fontSize = TextUnit(1.8f, TextUnitType.Em), modifier = Modifier.align(Alignment.Center))
 	}
 }
 
