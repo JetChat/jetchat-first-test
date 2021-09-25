@@ -1,4 +1,3 @@
-
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -29,9 +28,11 @@ fun App() {
 	}
 	
 	var message: Message
-	for (i in 0..5) {
-		message = Message("$text $i", guild.getMember("Ayfri#0000")!!.user)
-		guild.textChannels.first().createMessage(message)
+	for (channel in guild.textChannels) {
+		for (i in 0..10) {
+			message = Message("$text $i in #${channel.name}", guild.getMember("Ayfri#0000")!!.user)
+			channel.createMessage(message)
+		}
 	}
 	
 	Guild(guild)
