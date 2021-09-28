@@ -1,6 +1,6 @@
 package composables
 
-import androidx.compose.foundation.BoxWithTooltip
+import androidx.compose.foundation.TooltipArea
 import androidx.compose.foundation.TooltipPlacement
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -62,11 +62,10 @@ fun Message(message: Message) {
 	}
 }
 
-@OptIn(ExperimentalUnitApi::class, androidx.compose.ui.ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalUnitApi::class, androidx.compose.ui.ExperimentalComposeUiApi::class, androidx.compose.foundation.ExperimentalFoundationApi::class)
 @Composable
 fun MessageButtons(message: Message) {
-	BoxWithTooltip(
-		tooltipPlacement = TooltipPlacement.CursorPoint(),
+	TooltipArea(
 		tooltip = {
 			Box(
 				modifier = Modifier
@@ -75,7 +74,8 @@ fun MessageButtons(message: Message) {
 			) {
 				Text(message.id.toString(), color = Color.White)
 			}
-		}
+		},
+		tooltipPlacement = TooltipPlacement.CursorPoint()
 	) {
 		Box(
 			modifier = Modifier

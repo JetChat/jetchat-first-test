@@ -79,6 +79,7 @@ fun SendBox(text: MutableState<String>, modifier: Modifier = Modifier, onSend: (
 			onValueChange = {
 				text.value = it
 			},
+			
 			placeholder = {
 				Text("Enter Text")
 			}
