@@ -1,13 +1,25 @@
 package entities
 
 import Snowflake
+import androidx.compose.foundation.Image
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Brightness1
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ImageBitmap
 import kotlinx.datetime.Clock
+import loadNetworkImage
 
-class Guild(val name: String) {
+open class Guild(name: String) {
+	var name: String = name
+		internal set
 	val channels = mutableMapOf<Snowflake, GuildChannel>()
 	val textChannels get() = channels.values.filterIsInstance<GuildTextChannel>()
 	val createdAt = Clock.System.now()
-	val id: Snowflake = createdAt.toEpochMilliseconds()
+	val iconUrl: String? = null
+	val icon: ImageBitmap? get() = if (iconUrl != null) loadNetworkImage(iconUrl) else null
+	var id: Snowflake = createdAt.toEpochMilliseconds()
+		internal set
 	val members = mutableMapOf<Snowflake, GuildMember>()
 	
 	fun addMember(member: GuildMember): GuildMember {
@@ -19,6 +31,13 @@ class Guild(val name: String) {
 		val guildMember = GuildMember(this, member)
 		members[member.id] = guildMember
 		return guildMember
+	}
+	
+	fun copyFrom(other: Guild) {
+		channels.putAll(other.channels)
+		members.putAll(other.members)
+		id = other.id
+		name = other.name
 	}
 	
 	fun getMember(tag: String): GuildMember? {
@@ -44,4 +63,14 @@ class Guild(val name: String) {
 	fun deleteChannel(name: Snowflake): GuildChannel? {
 		return channels.remove(name)
 	}
+	
+	companion object {
+		val defaultIcon get() = Icons.Default.Brightness1
+	}
+}
+
+@Composable
+fun Guild.asImage(modifier: Modifier) {
+	if (iconUrl != null) Image(icon!!, "$name icon", modifier)
+	else Image(Guild.defaultIcon, "$name icon", modifier)
 }

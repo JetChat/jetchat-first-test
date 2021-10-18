@@ -1,3 +1,4 @@
+
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -8,7 +9,9 @@ import androidx.compose.ui.window.WindowPlacement
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
 import composables.Guild
+import composables.GuildList
 import entities.ChannelType
+import entities.Client
 import entities.Guild
 import entities.Message
 import entities.User
@@ -16,6 +19,8 @@ import entities.User
 @Composable
 @Preview
 fun App() {
+	val first = User("User#0000");
+	val client = Client(first)
 	val text = "Hello, World!"
 	val guild by remember { mutableStateOf(Guild("test")) }
 	for (i in 0..15) {
@@ -34,7 +39,8 @@ fun App() {
 			channel.createMessage(message)
 		}
 	}
-	
+	client.addGuild(guild)
+	GuildList(client)
 	Guild(guild)
 }
 

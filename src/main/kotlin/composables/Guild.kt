@@ -1,12 +1,15 @@
 package composables
 
+import androidx.compose.foundation.TooltipArea
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Icon
@@ -23,8 +26,10 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import entities.ChannelType.GuildTextChannel
+import entities.Client
 import entities.Guild
 import entities.GuildChannel
+import entities.asImage
 
 @Composable
 fun ChannelList(guild: Guild, onSelect: (GuildChannel) -> Unit = {}, modifier: Modifier = Modifier) {
@@ -95,6 +100,28 @@ fun GuildMemberList(guild: Guild) {
 	LazyColumn {
 		items(members) {
 			User(it.user)
+		}
+	}
+}
+
+@Composable
+fun GuildListItem(guild: Guild) {
+	val imageSize = 32
+	TooltipArea(
+		tooltip = {
+			Text(guild.name)
+		}
+	) {
+		guild.asImage(Modifier.height(imageSize.dp).width(imageSize.dp))
+	}
+}
+
+@Composable
+fun GuildList(client: Client) {
+	val guilds = client.guilds.values.sortedBy { it.position }
+	LazyColumn {
+		items(guilds) {
+			GuildListItem(it)
 		}
 	}
 }
