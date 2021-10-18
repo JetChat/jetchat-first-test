@@ -21,6 +21,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
@@ -109,8 +110,11 @@ fun GuildListItem(guild: Guild) {
 	val imageSize = 32
 	TooltipArea(
 		tooltip = {
-			Text(guild.name)
-		}
+			Tooltip {
+				Text(guild.name, color = Color.White)
+			}
+		},
+		delayMillis = 100
 	) {
 		guild.asImage(Modifier.height(imageSize.dp).width(imageSize.dp))
 	}
